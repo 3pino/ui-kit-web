@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { flushSync, mount, unmount } from 'svelte';
+import { flushSync, mount, unmount, type Component } from 'svelte';
 import * as dom from './dom';
 import { setLucideForTest } from './icons.svelte';
 import Icon from './Icon.svelte';
@@ -62,7 +62,7 @@ afterEach(() => {
 });
 
 /** Svelte の部品を描いて、できた要素を返す */
-function svelte(Component: Parameters<typeof mount>[0], props: Record<string, unknown>): HTMLElement {
+function svelte(Component: Component<any>, props: Record<string, unknown>): HTMLElement {
   const host = document.createElement('div');
   root.append(host);
   const app = mount(Component, { target: host, props });
