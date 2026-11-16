@@ -1,0 +1,39 @@
+{
+  "name": "@3pino/ui-kit",
+  "version": "0.1.0",
+  "description": "3pino のアプリ共通の UI 部品。Svelte 5 の部品と、同じ DOM を作るフレームワークに依らない DOM の部品（dom）。見た目は @3pino/design-system のクラス",
+  "license": "MIT",
+  "type": "module",
+  "svelte": "./src/index.ts",
+  "exports": {
+    ".": { "types": "./src/index.ts", "svelte": "./src/index.ts", "default": "./src/index.ts" },
+    "./dom": { "types": "./src/dom/index.ts", "default": "./src/dom/index.ts" },
+    "./*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": ["src", "docs", "!src/**/*.test.ts", "!src/test-support"],
+  "scripts": {
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@3pino/design-system": ">=0.4.1",
+    "@lucide/svelte": "^1.53.0",
+    "lucide": "^1.53.0",
+    "svelte": "^5.57.0"
+  },
+  "devDependencies": {
+    "@3pino/design-system": "git+https://github.com/3pino/design-system.git#v0.4.1",
+    "@lucide/svelte": "^1.53.0",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@tsconfig/svelte": "^5.0.8",
+    "@types/node": "^26.6.4",
+    "jsdom": "^29.1.1",
+    "lucide": "^1.53.0",
+    "svelte": "^5.57.2",
+    "svelte-check": "^4.7.6",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.3"
+  }
+}
