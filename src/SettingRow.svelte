@@ -46,7 +46,7 @@
   </div>
   {#if control || (deleting && ondelete)}
     <div class="setting-row-control">
-      {#if control}<div class:setting-row-control-hidden={deleting}>{@render control()}</div>{/if}
+      {#if control}<div class="setting-row-control-slot" class:setting-row-control-hidden={deleting}>{@render control()}</div>{/if}
       {#if deleting && ondelete}
         <IconButton label={deleteLabel ?? '削除'} class="setting-row-delete" onclick={ondelete}>
           <X size={16} />

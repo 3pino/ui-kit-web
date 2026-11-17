@@ -5,6 +5,8 @@
 //   parent.append(dom.button({ text: '保存', variant: 'primary', onClick: save }));
 
 import { createIcon } from '../icons.svelte';
+import './dom.css';
+import { cx, div } from './util';
 import {
   BUTTON_ICON_ONLY_SIZE,
   BUTTON_ICON_SIZE,
@@ -14,12 +16,9 @@ import {
 } from './sizes';
 
 export * from './sizes';
-
-function div(className: string): HTMLDivElement {
-  const el = document.createElement('div');
-  el.className = className;
-  return el;
-}
+export type { Child, Children } from './util';
+export * from './parts';
+export * from './overlay';
 
 // ---- icon ----
 
@@ -239,9 +238,9 @@ export function navbar(opts: NavBarOptions): HTMLElement {
 // ---- divider ----
 
 /** 横の区切り線（`.divider`） */
-export function divider(): HTMLHRElement {
+export function divider(opts: { class?: string } = {}): HTMLHRElement {
   const el = document.createElement('hr');
-  el.className = 'divider';
+  el.className = cx('divider', opts.class);
   return el;
 }
 

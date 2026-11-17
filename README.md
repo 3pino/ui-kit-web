@@ -3,7 +3,7 @@
 3pino のアプリ共通の UI 部品（Svelte 5）。[disnans](https://github.com/3pino/disnans)・[fixplor](https://github.com/3pino/fixplor)・[@3pino/explorer-kit](https://github.com/3pino/explorer-kit) と、disnans のプラグインが使います。
 
 - **Svelte の部品**: `Button` `IconButton` `Icon` `Toggle` `TextInput` `SegmentedButton` `NavBar` `Divider` `SettingRow` `Section` `StatusLine` `Slider` `Menu` `MenuItem` `Modal` `PanelBar` `SuggestList` `SortableList`
-- **DOM の部品**（フレームワークに依らない。`@3pino/ui-kit-web/dom`）: `icon` `button` `toggle` `input` `segmented` `navbar` `divider` `setting`。同じクラスを付けた、**Svelte の部品と同じ DOM** を作る
+- **DOM の部品**（フレームワークに依らない。`@3pino/ui-kit-web/dom`）: `icon` `button` `iconButton` `toggle` `input` `segmented` `navbar` `divider` `setting` `menuItem` `menu` `modal` `panelBar` `section` `statusLine` `slider` `suggestList`（Svelte の部品のうち、SortableList 以外）。同じクラスを付けた、**Svelte の部品と同じ DOM** を作る
 - **並べ替えの計算・ジェスチャー・振動**: `@3pino/ui-kit-web/sortable` `@3pino/ui-kit-web/gesture` `@3pino/ui-kit-web/haptics`（DOM を使わない関数）
 - **アイコン**（`@3pino/ui-kit-web/icons`）: 名前から引く登録簿（既定は Lucide。アプリの独自のアイコン・あとから足すアイコン・引き方の差し替えができる）
 
@@ -12,7 +12,7 @@
 ## 使い方
 
 ```sh
-npm install git+https://github.com/3pino/ui-kit-web.git#v0.1.0
+npm install git+https://github.com/3pino/ui-kit-web.git#v0.2.0
 ```
 
 配布はソースのまま（`.svelte`・`.svelte.ts`・`.ts`）。取り込む側の Vite（`@sveltejs/vite-plugin-svelte`）が変換します。
@@ -44,11 +44,11 @@ parent.append(dom.button({ text: '配布', icon: 'upload', variant: 'primary', o
 ```sh
 npm install
 npm run check   # 型
-npm test        # 部品・アイコン・並べ替えの試験と、Svelte と DOM が同じ DOM になることの試験（parity.test.ts）
+npm test        # 部品・アイコン・並べ替えの試験と、Svelte と DOM が同じ DOM になることの試験（parity.test.ts・parity.parts.test.ts）
 ```
 
 ## 変更するとき
 
-- Svelte の部品か DOM の部品を変えたら、もう一方と [docs/ui.md](docs/ui.md) をそろえる（`parity.test.ts` が、違いを見つける）
+- Svelte の部品か DOM の部品を変えたら、もう一方と [docs/ui.md](docs/ui.md) をそろえる（`parity.test.ts` と `parity.parts.test.ts` が、違いを見つける）
 - アプリ・プラグインに結びつくこと（トースト・確認・戻る操作など）は、ここに入れず、差し込み口（`setIconResolver` `setHaptics` など）にする
 - 変えたらバージョンを上げて `git tag vX.Y.Z`。各アプリは、タグを指定して取り込む

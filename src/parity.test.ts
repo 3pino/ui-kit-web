@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { flushSync, mount, unmount, type Component } from 'svelte';
+import { describe, expect, it, vi } from 'vitest';
+import { flushSync } from 'svelte';
 import * as dom from './dom';
-import { setLucideForTest } from './icons.svelte';
+import { made, root, same, svelte, useParityFixture } from './test-support/parity';
 import Icon from './Icon.svelte';
 import Toggle from './Toggle.svelte';
 import TextInput from './TextInput.svelte';
@@ -17,73 +17,8 @@ import SettingRowHost from './test-support/SettingRowHost.svelte';
 // 空白だけの文字列・<svg> の xmlns・<input> の type="text"）は見ない。押したあとの見た目（クラス・aria）が同じになることも確かめる。
 // 片方だけの機能（Svelte の alert・deleting、DOM に無い class など）は、ここでは比べない（それぞれの部品の試験で見る）。
 
-const LUCIDE = {
-  Upload: [['path', { d: 'M1 1' }]],
-  X: [['path', { d: 'M2 2' }]],
-  Dice5: [['circle', { cx: 12, cy: 12, r: 3 }]],
-  House: [['path', { d: 'M3 3' }]],
-  Settings: [['path', { d: 'M4 4' }]],
-  MessageCircle: [['circle', { cx: 12, cy: 12, r: 10 }]],
-} as unknown as Parameters<typeof setLucideForTest>[0];
+useParityFixture();
 
-/** 比べるための文字列にする */
-export function shape(node: Node, depth = 0): string {
-  if (node.nodeType === Node.TEXT_NODE) {
-    const t = (node.textContent ?? '').replace(/\s+/g, ' ').trim();
-    return t ? `${'  '.repeat(depth)}"${t}"\n` : '';
-  }
-  if (!(node instanceof Element)) return '';
-  const attrs = [...node.attributes]
-    // Svelte の <svg> には xmlns が付くが、DOM では名前空間で決まるので同じ（属性の有無だけが違う）。<input type="text"> は既定と同じ
-    .filter((a) => a.name !== 'xmlns' && !(node.tagName === 'INPUT' && a.name === 'type' && a.value === 'text'))
-    .map((a) => {
-      const v = a.name === 'class' ? a.value.split(/\s+/).filter((c) => c && !/^svelte-[a-z0-9]+$/.test(c)).sort().join(' ') : a.value;
-      return `${a.name}="${v}"`;
-    })
-    .sort()
-    .join(' ');
-  const kids = [...node.childNodes].map((c) => shape(c, depth + 1)).join('');
-  return `${'  '.repeat(depth)}<${node.tagName.toLowerCase()}${attrs ? ' ' + attrs : ''}>\n${kids}`;
-}
-
-let cleanups: (() => void)[] = [];
-let root: HTMLElement;
-
-beforeEach(() => {
-  setLucideForTest(LUCIDE);
-  root = document.createElement('div');
-  document.body.append(root);
-});
-afterEach(() => {
-  for (const c of cleanups) c();
-  cleanups = [];
-  document.body.innerHTML = '';
-  setLucideForTest(null);
-});
-
-/** Svelte の部品を描いて、できた要素を返す */
-function svelte(Component: Component<any>, props: Record<string, unknown>): HTMLElement {
-  const host = document.createElement('div');
-  root.append(host);
-  const app = mount(Component, { target: host, props });
-  cleanups.push(() => void unmount(app));
-  flushSync();
-  const el = host.firstElementChild;
-  if (!el) throw new Error('何も描かれていません');
-  return el as HTMLElement;
-}
-
-/** DOM の部品で作ったものを、同じ形で置く */
-function made(el: Element): HTMLElement {
-  const host = document.createElement('div');
-  root.append(host);
-  host.append(el);
-  return el as HTMLElement;
-}
-
-function same(a: Element, b: Element): void {
-  expect(shape(b)).toBe(shape(a));
-}
 
 describe('Icon', () => {
   it.each([
@@ -221,18 +156,25 @@ describe('NavBar', () => {
 });
 
 /**
- * 既知の違い（意図したもの）: Svelte の SettingRow は、右側の操作を「クラスも属性もない <div>」で包む（編集モードで操作だけを隠すため。
+ * 既知の違い（意図したもの）: Svelte の SettingRow は、右側の操作を `<div class="setting-row-control-slot">` で包む（編集モードで操作だけを隠すため。
  * 隠すときだけ .setting-row-control-hidden が付く。SettingsField.svelte が `.setting-row-control > div` を使っているので、外せない）。
- * DOM の setting() は包まない（プラグインの DOM を変えないため）。その包みだけを外して比べる
+ * DOM の setting() は包まない。包むと、トグルなどの下に文字の行の余白（インラインの隙間）が入り、プラグインの今の見た目が縦に約 3px ずれるため
+ * （実測: トグルが行の中央より約 3px 上がる）。この包みだけを外して比べる。包みに CSS の規則は無い（クラスは名前を付けただけ）
  */
 function unwrapControl(row: HTMLElement): HTMLElement {
-  const ctl = row.querySelector('.setting-row-control');
-  const wrap = ctl?.firstElementChild;
-  if (ctl && wrap && wrap.tagName === 'DIV' && wrap.attributes.length === 0) wrap.replaceWith(...wrap.childNodes);
+  const slots = row.querySelectorAll('.setting-row-control > .setting-row-control-slot');
+  for (const slot of slots) slot.replaceWith(...slot.childNodes);
   return row;
 }
 
 describe('SettingRow', () => {
+  it('Svelte の包み（.setting-row-control-slot）は、操作があるときだけ 1 つあり、ほかに違いは無い', () => {
+    expect(svelte(SettingRowHost, { name: 'a' }).querySelectorAll('.setting-row-control-slot')).toHaveLength(0);
+    const row = svelte(SettingRowHost, { name: 'a', withControl: true });
+    expect(row.querySelectorAll('.setting-row-control-slot')).toHaveLength(1);
+    expect(row.querySelector('.setting-row-control-slot')?.className).toBe('setting-row-control-slot');
+  });
+
   it.each([
     ['名前だけ', { name: '通知' }],
     ['説明つき', { name: '通知', description: '新着を知らせます' }],
@@ -241,7 +183,7 @@ describe('SettingRow', () => {
   ] as const)('%s', (_n, o) => {
     const { withControl, ...rest } = o as { name: string; description?: string; icon?: string; withControl?: boolean };
     const box = document.createElement('div');
-    root.append(box);
+    root().append(box);
     const row = dom.setting(box, { ...rest, control: withControl ? dom.toggle({ value: true, label: '有効' }) : undefined });
     expect(box.lastElementChild).toBe(row);
     same(unwrapControl(svelte(SettingRowHost, o)), row);

@@ -1,6 +1,6 @@
 {
   "name": "@3pino/ui-kit-web",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "3pino のアプリ共通の UI 部品。Svelte 5 の部品と、同じ DOM を作るフレームワークに依らない DOM の部品（dom）。見た目は @3pino/design-system のクラス",
   "license": "MIT",
   "type": "module",
