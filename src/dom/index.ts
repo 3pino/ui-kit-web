@@ -1,7 +1,7 @@
 // フレームワークに依らない DOM の部品。Svelte の部品と同じクラスを付けた、同じ DOM を作る。
 // 見た目は @3pino/design-system のクラス（components.css）。アイコンの名前の引き方は ../icons.svelte（差し替えられる）
 //
-//   import * as dom from '@3pino/ui-kit/dom';
+//   import * as dom from '@3pino/ui-kit-web/dom';
 //   parent.append(dom.button({ text: '保存', variant: 'primary', onClick: save }));
 
 import { createIcon } from '../icons.svelte';

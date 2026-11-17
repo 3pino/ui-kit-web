@@ -4,8 +4,8 @@
 
 | 作り方 | 使う場面 | 取り込み |
 | --- | --- | --- |
-| **Svelte の部品** | アプリの画面 | `import Button from '@3pino/ui-kit/Button.svelte'` |
-| **DOM の部品**（フレームワークに依らない） | プラグイン、Svelte でない画面、テスト | `import * as dom from '@3pino/ui-kit/dom'` |
+| **Svelte の部品** | アプリの画面 | `import Button from '@3pino/ui-kit-web/Button.svelte'` |
+| **DOM の部品**（フレームワークに依らない） | プラグイン、Svelte でない画面、テスト | `import * as dom from '@3pino/ui-kit-web/dom'` |
 
 **見た目の正は、[@3pino/design-system](https://github.com/3pino/design-system) のグローバルの CSS クラス**（`components.css`。トークンは `tokens.css`）です。
 このパッケージは、そのクラスを付けるだけの薄い部品で、色や大きさは持ちません。取り込む側のアプリが design-system の CSS を読み込んでください。
@@ -40,7 +40,7 @@ Svelte だけの部品（下の「Svelte だけの部品」）は、DOM の作�
 Svelte の画面では、**アイコン部品を渡す**のが基本です（すぐに描けて、使う分だけがバンドルに入ります）。名前（文字列）は、プラグインが指定したアイコンなど、実行時に決まるものに使います。
 
 ```ts
-import { defineBuiltinIcon, registerIcon, createIcon, fillIcon } from '@3pino/ui-kit';
+import { defineBuiltinIcon, registerIcon, createIcon, fillIcon } from '@3pino/ui-kit-web';
 
 defineBuiltinIcon('my-logo', { body: '<path d="M3 3h18v18H3z"/>', attrs: {} });   // アプリの独自のアイコン
 const off = registerIcon('dice-cup', '<path d="M5 4h14l-2 16H7z"/>');           // 中身だけ、または <svg> まるごと
@@ -212,7 +212,7 @@ Esc と外側のタップで `onclose`。開いたとき最初のボタン・入
 
 ## 部品の外から決めること
 
-アプリごとに違うことは、部品の中に持たず、差し込み口にしてあります（`import { ... } from '@3pino/ui-kit'`）。
+アプリごとに違うことは、部品の中に持たず、差し込み口にしてあります（`import { ... } from '@3pino/ui-kit-web'`）。
 
 | 口 | 何を決めるか | 既定 |
 | --- | --- | --- |
