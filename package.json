@@ -1,13 +1,12 @@
 {
   "name": "@3pino/ui-kit-web",
-  "version": "0.2.0",
-  "description": "3pino のアプリ共通の UI 部品。Svelte 5 の部品と、同じ DOM を作るフレームワークに依らない DOM の部品（dom）。見た目は @3pino/design-system のクラス",
+  "version": "0.3.0",
+  "description": "3pino のアプリ共通の UI 部品。Svelte 5 の部品。見た目は @3pino/design-system のクラス",
   "license": "MIT",
   "type": "module",
   "svelte": "./src/index.ts",
   "exports": {
     ".": { "types": "./src/index.ts", "svelte": "./src/index.ts", "default": "./src/index.ts" },
-    "./dom": { "types": "./src/dom/index.ts", "default": "./src/dom/index.ts" },
     "./icons": { "types": "./src/icons.svelte.ts", "svelte": "./src/icons.svelte.ts", "default": "./src/icons.svelte.ts" },
     "./sortable": "./src/sortable.ts",
     "./gesture": "./src/gesture.ts",

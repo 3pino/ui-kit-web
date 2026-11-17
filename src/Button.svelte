@@ -4,7 +4,8 @@
   import Icon from './Icon.svelte';
   import type { IconRef } from './icons.svelte';
 
-  // 見た目はグローバルの .btn（@3pino/design-system の components.css）。ここは薄い包みにする。プラグイン向けの ui.button も同じ DOM を作る。
+  // アイコンと文字の間には、空白の文字を入れない（.btn は flex で、間は gap。プラグインが textContent を読んでも、書いた文字そのものになる）
+  // 見た目はグローバルの .btn（@3pino/design-system の components.css）。ここは薄い包みにする。プラグイン向けの ui.button は、本体がこの部品を載せて作る。
   // icon を渡すと文字の左にアイコンを出す。中身（children）がなければアイコンだけのボタン（.btn-icon-only）で、label は必須
   let {
     variant = 'default',
@@ -35,6 +36,5 @@
   aria-label={label}
   {...rest}
 >
-  {#if icon}<Icon {icon} size={children ? 15 : 18} />{/if}
-  {@render children?.()}
+  {#if icon}<Icon {icon} size={children ? 15 : 18} />{/if}{@render children?.()}
 </button>

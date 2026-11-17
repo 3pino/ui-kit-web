@@ -25,6 +25,5 @@
 </script>
 
 <button type="button" class="icon-btn {className}" class:active aria-label={label} {...rest}>
-  {#if icon}<Icon {icon} size={iconSize} />{/if}
-  {@render children?.()}
+  {#if icon}<Icon {icon} size={iconSize} />{/if}{@render children?.()}
 </button>

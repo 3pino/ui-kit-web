@@ -1,4 +1,4 @@
-// モーダルを開いたときのフォーカスの扱い（Modal.svelte と、DOM の modal が同じものを使う）
+// モーダルを開いたときのフォーカスの扱い（Modal.svelte が使う）
 
 /** 開いたとき: 中の最初の入力欄・主ボタン・ボタンにフォーカスを移す。返す関数を呼ぶと（閉じるとき）、元のフォーカスに戻す */
 export function focusFirstIn(box: HTMLElement | undefined): () => void {

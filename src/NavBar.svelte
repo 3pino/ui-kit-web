@@ -16,7 +16,7 @@
   import Icon from './Icon.svelte';
 
   // タブのバー（アイコン + ラベル、選択中は強調、右上にバッジ）。本体の下のナビゲーションに使う。
-  // 見た目はグローバルの .nav-bar（@3pino/design-system の components.css）。プラグイン向けの ui.navbar も同じ DOM を作る
+  // 見た目はグローバルの .nav-bar（@3pino/design-system の components.css）。プラグイン向けの ui.navbar は、本体がこの部品を載せて作る
 
   let {
     items,
@@ -45,16 +45,7 @@
       aria-current={it.id === selected ? 'page' : undefined}
       onclick={() => onselect?.(it.id)}
     >
-      <span class="nav-bar-item-icon">
-        <Icon icon={it.icon} size={22} />
-        {#if it.badge !== undefined && it.badge !== null && it.badge !== 0 && it.badge !== ''}
-          <span class="badge nav-bar-item-badge">{it.badge}</span>
-        {/if}
-        {#if it.alert}
-          <span class="nav-bar-item-alert" role="img" aria-label={it.alert}></span>
-        {/if}
-      </span>
-      <span class="nav-bar-item-label">{it.label}</span>
+      <span class="nav-bar-item-icon"><Icon icon={it.icon} size={22} />{#if it.badge !== undefined && it.badge !== null && it.badge !== 0 && it.badge !== ''}<span class="badge nav-bar-item-badge">{it.badge}</span>{/if}{#if it.alert}<span class="nav-bar-item-alert" role="img" aria-label={it.alert}></span>{/if}</span><span class="nav-bar-item-label">{it.label}</span>
     </button>
   {/each}
 </nav>

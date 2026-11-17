@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createIcon, defineBuiltinIcon, fillIcon, hasIcon, loadLucide, lookupIcon, lucideKey, parseIconSvg, registerIcon, rerender, setIconResolver, setLucideForTest } from './icons.svelte';
+import { defineBuiltinIcon, fillIcon, hasIcon, loadLucide, lookupIcon, lucideKey, parseIconSvg, registerIcon, rerender, setIconResolver, setLucideForTest } from './icons.svelte';
 
 const LUCIDE = {
   Puzzle: [['path', { d: 'M1 1' }]],
@@ -13,6 +13,20 @@ afterEach(() => {
 });
 
 defineBuiltinIcon('app-logo', { body: '<path d="M2 2"/>', attrs: {} });
+
+/** Icon.svelte が描く <svg> と同じ形の入れ物（fillIcon の試験用） */
+function svgOf(name: string, opts: { size?: number; class?: string; label?: string } = {}): SVGSVGElement {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  el.setAttribute('width', String(opts.size ?? 24));
+  el.setAttribute('height', String(opts.size ?? 24));
+  el.setAttribute('class', opts.class ? `icon ${opts.class}` : 'icon');
+  if (opts.label) {
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', opts.label);
+  } else el.setAttribute('aria-hidden', 'true');
+  fillIcon(el, name);
+  return el;
+}
 
 describe('icons', () => {
   it('Lucide の名前（ケバブ）を lucide パッケージの名前にする', () => {
@@ -56,11 +70,11 @@ describe('icons', () => {
     expect(() => parseIconSvg('<path')).toThrow();
   });
 
-  it('createIcon は Lucide を読み込んでから描く', async () => {
+  it('fillIcon は Lucide を読み込んでから描く', async () => {
     setLucideForTest(null);
     // 読み込みを待たせる
     vi.doMock('lucide', () => ({ icons: LUCIDE }));
-    const el = createIcon('message-circle', { size: 18, class: 'x' });
+    const el = svgOf('message-circle', { size: 18, class: 'x' });
     expect(el.getAttribute('width')).toBe('18');
     expect(el.getAttribute('class')).toBe('icon x');
     expect(el.getAttribute('aria-hidden')).toBe('true');
@@ -74,7 +88,7 @@ describe('icons', () => {
   it('fillIcon は前のアイコンの属性を残さない', () => {
     setLucideForTest(LUCIDE);
     const off = registerIcon('test-filled', '<svg viewBox="0 0 16 16" fill="currentColor" stroke="none"><path d="M0 0"/></svg>');
-    const el = createIcon('test-filled', { label: 'テスト' });
+    const el = svgOf('test-filled', { label: 'テスト' });
     expect(el.getAttribute('fill')).toBe('currentColor');
     expect(el.getAttribute('role')).toBe('img');
     fillIcon(el, 'puzzle');
@@ -103,7 +117,7 @@ describe('引き方の差し替え', () => {
   it('pending を返す引き方は、rerender で描き直される', () => {
     let ready = false;
     setIconResolver((name) => (ready ? { body: '<path d="M3 3"/>', attrs: {} } : 'pending'));
-    const el = createIcon('late');
+    const el = svgOf('late');
     expect(el.innerHTML).toBe('');
     ready = true;
     rerender();

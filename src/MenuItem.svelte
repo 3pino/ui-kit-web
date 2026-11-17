@@ -38,8 +38,7 @@
   title={disabled ? reason : undefined}
   {onclick}
 >
-  {#if icon}<Icon {icon} size={iconSize} />{/if}
-  {#if disabled && reason}
+  {#if icon}<Icon {icon} size={iconSize} />{/if}{#if disabled && reason}
     <span class="menu-item-label">
       {@render children?.()}
       <span class="menu-item-reason">{reason}</span>

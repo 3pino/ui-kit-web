@@ -274,28 +274,3 @@ export function fillIcon(el: SVGElement, name: string): void {
   }
   el.innerHTML = def.body;
 }
-
-export type IconOptions = {
-  /** 大きさ（px）。既定は 24 */
-  size?: number;
-  class?: string;
-  /** 読み上げ用の名前。省略すると飾り（aria-hidden） */
-  label?: string;
-};
-
-/** 名前のアイコンの <svg> を作る（Svelte の Icon と同じ DOM） */
-export function createIcon(name: string, opts: IconOptions = {}): SVGSVGElement {
-  const el = document.createElementNS(SVG_NS, 'svg');
-  const size = String(opts.size ?? 24);
-  el.setAttribute('width', size);
-  el.setAttribute('height', size);
-  el.setAttribute('class', opts.class ? `icon ${opts.class}` : 'icon');
-  if (opts.label) {
-    el.setAttribute('role', 'img');
-    el.setAttribute('aria-label', opts.label);
-  } else {
-    el.setAttribute('aria-hidden', 'true');
-  }
-  fillIcon(el, name);
-  return el;
-}

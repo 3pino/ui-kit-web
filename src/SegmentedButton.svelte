@@ -3,7 +3,7 @@
   import type { IconRef } from './icons.svelte';
 
   // 横に並んだ選択肢から1つを選ぶボタン（テーマの切り替えなど）。
-  // 見た目はグローバルの .segmented（@3pino/design-system の components.css）。プラグイン向けの ui.segmented も同じ DOM を作る
+  // 見た目はグローバルの .segmented（@3pino/design-system の components.css）。プラグイン向けの ui.segmented は、本体がこの部品を載せて作る
   let {
     options,
     value = $bindable(),

@@ -3,7 +3,7 @@
 
   // アイコン。icon は名前（本体の独自のもの・プラグインが登録したもの・Lucide）か、Svelte のアイコン部品。
   // 名前のときは lib/icons.svelte.ts で引いて描く。見た目はグローバルの .icon（@3pino/design-system の components.css）。
-  // プラグイン向けの ui.icon も同じ DOM を作る
+  // プラグイン向けの ui.icon は、本体がこの部品を載せて作る
   let {
     icon,
     size = 24,

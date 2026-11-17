@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Component, Snippet } from 'svelte';
   import LoaderCircle from '@lucide/svelte/icons/loader-circle';
+  import Icon from './Icon.svelte';
 
   // アイコン付きの1行の状態表示。見た目はグローバルの .status-line（@3pino/design-system の components.css）
   let {
@@ -11,7 +12,8 @@
     children,
   }: {
     kind?: 'default' | 'muted' | 'ok' | 'accent' | 'warn' | 'error';
-    icon?: Component<{ size?: number }>;
+    /** アイコン（Svelte の部品か、アイコンの名前） */
+    icon?: Component<{ size?: number }> | string;
     /** 回るアイコンを出す（icon より優先） */
     busy?: boolean;
     class?: string;
@@ -22,9 +24,10 @@
 <p class="status-line {kind === 'default' ? '' : `status-line-${kind}`} {className}">
   {#if busy}
     <LoaderCircle size={15} class="spin" />
+  {:else if typeof icon === 'string'}
+    <Icon {icon} size={15} />
   {:else if icon}
-    {@const Icon = icon}
-    <Icon size={15} />
-  {/if}
-  {@render children?.()}
+    {@const C = icon}
+    <C size={15} />
+  {/if}{@render children?.()}
 </p>

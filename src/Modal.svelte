@@ -8,7 +8,7 @@
     $props();
   let box: HTMLDivElement | undefined = $state();
 
-  // 開いたとき最初の入力欄・ボタンにフォーカスし、閉じたら元に戻す（DOM の modal と同じ）
+  // 開いたとき最初の入力欄・ボタンにフォーカスし、閉じたら元に戻す
   onMount(() => focusFirstIn(box));
 </script>
 
