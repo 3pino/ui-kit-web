@@ -24,3 +24,4 @@ export {
 } from './icons.svelte';
 export { setHaptics, vibrate, type Vibrate } from './haptics';
 export { SWIPE_LOCK_PX, swipeAxis, type SwipeAxis } from './gesture';
+export * from './sortable';

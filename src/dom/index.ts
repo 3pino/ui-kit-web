@@ -43,7 +43,7 @@ export type ButtonOptions = {
   text?: string;
   /** アイコンの名前 */
   icon?: string;
-  variant?: 'primary' | 'danger' | 'ghost';
+  variant?: 'default' | 'primary' | 'danger' | 'ghost';
   /** 読み上げ用の名前。アイコンだけのボタンでは必須 */
   label?: string;
   disabled?: boolean;

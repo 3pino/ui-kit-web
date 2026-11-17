@@ -8,7 +8,7 @@
     icon,
     label,
     disabled,
-  }: { text?: string; variant?: 'primary' | 'danger' | 'ghost'; icon?: string; label?: string; disabled?: boolean } = $props();
+  }: { text?: string; variant?: 'default' | 'primary' | 'danger' | 'ghost'; icon?: string; label?: string; disabled?: boolean } = $props();
 </script>
 
 {#if text}

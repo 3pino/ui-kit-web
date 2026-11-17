@@ -73,7 +73,7 @@ fillIcon(existingSvg, 'dice-5');                                                
 | --- | --- |
 | クラス | `.btn`（`.primary` / `.danger` / `.ghost` / `.btn-icon-only`） |
 | Svelte | `<Button variant="primary" icon={Upload} onclick={...}>配布</Button>`。`type` の既定は `button`（送信は `type="submit"`）。ほかの属性はそのまま `<button>` に渡る |
-| DOM | `dom.button({ text: '配布', icon: 'upload', variant: 'primary', label, disabled, onClick })` → `HTMLButtonElement`。`text` か `icon` が要る。アイコンだけなら `label` も要る（足りないと `DomArgumentError`） |
+| DOM | `dom.button({ text: '配布', icon: 'upload', variant: 'primary', label, disabled, onClick })`（`variant` の既定は `'default'`） → `HTMLButtonElement`。`text` か `icon` が要る。アイコンだけなら `label` も要る（足りないと `DomArgumentError`） |
 | 中身 | アイコン（文字つきは 15px、アイコンだけは 18px）→ 文字 |
 | 状態 | `variant`: `default` / `primary` / `danger` / `ghost`（枠も背景もなく、ホバーで背景に色が付く）。`disabled`。中身（文字）がなくて `icon` だけなら `.btn-icon-only`（正方形。`label` が必須） |
 

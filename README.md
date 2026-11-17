@@ -4,7 +4,8 @@
 
 - **Svelte の部品**: `Button` `IconButton` `Icon` `Toggle` `TextInput` `SegmentedButton` `NavBar` `Divider` `SettingRow` `Section` `StatusLine` `Slider` `Menu` `MenuItem` `Modal` `PanelBar` `SuggestList` `SortableList`
 - **DOM の部品**（フレームワークに依らない。`@3pino/ui-kit/dom`）: `icon` `button` `toggle` `input` `segmented` `navbar` `divider` `setting`。同じクラスを付けた、**Svelte の部品と同じ DOM** を作る
-- **アイコン**: 名前から引く登録簿（既定は Lucide。アプリの独自のアイコン・あとから足すアイコン・引き方の差し替えができる）
+- **並べ替えの計算・ジェスチャー・振動**: `@3pino/ui-kit/sortable` `@3pino/ui-kit/gesture` `@3pino/ui-kit/haptics`（DOM を使わない関数）
+- **アイコン**（`@3pino/ui-kit/icons`）: 名前から引く登録簿（既定は Lucide。アプリの独自のアイコン・あとから足すアイコン・引き方の差し替えができる）
 
 見た目は [@3pino/design-system](https://github.com/3pino/design-system) のクラスです。このパッケージは色や大きさを持ちません。部品ごとの使い方・クラス・状態は [docs/ui.md](docs/ui.md)。
 
