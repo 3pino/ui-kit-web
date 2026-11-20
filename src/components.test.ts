@@ -111,6 +111,34 @@ describe('Menu', () => {
     expect(host.querySelector('.menu')).not.toBeNull();
   });
 
+  it('onclose があるとき、Esc でも onclose（下の画面の Esc には届けない）', () => {
+    const below = vi.fn();
+    window.addEventListener('keydown', below);
+    cleanups.push(() => window.removeEventListener('keydown', below));
+    const fn = vi.fn();
+    render(Menu, { onclose: fn, children: html(items) });
+    const other = new KeyboardEvent('keydown', { key: 'a', bubbles: true, cancelable: true });
+    window.dispatchEvent(other);
+    expect(fn).not.toHaveBeenCalled();
+    expect(below).toHaveBeenCalledTimes(1);
+    const esc = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
+    document.body.dispatchEvent(esc);
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(esc.defaultPrevented).toBe(true);
+    expect(below).toHaveBeenCalledTimes(1);
+  });
+
+  it('onclose が無いメニューは、Esc を止めない', () => {
+    const below = vi.fn();
+    window.addEventListener('keydown', below);
+    cleanups.push(() => window.removeEventListener('keydown', below));
+    render(Menu, { children: html(items) });
+    const esc = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
+    document.body.dispatchEvent(esc);
+    expect(esc.defaultPrevented).toBe(false);
+    expect(below).toHaveBeenCalledTimes(1);
+  });
+
   describe('置き場所（画面からはみ出すときの直し方）', () => {
     /** .menu の矩形を差し替え、必要ならナビバーつきのシェルの中に置く */
     function place(rect: { left: number; right: number; bottom: number }, navRight: number | null): HTMLElement {
