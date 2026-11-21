@@ -190,7 +190,7 @@ fillIcon(existingSvg, 'dice-5');                                                
 | --- | --- |
 | クラス | `.suggest-list`（`<ul role="listbox">`） / `-option`（`<li role="option">`） / `-item`（`<button>`。`-selected`）。中身の `-item-title` / `-item-detail` などは使う側で書く |
 | Svelte | `<SuggestList bind:this={list} bind:index items={users} key={(u) => u.id} label="メンション" onpick={pick} onclose={close}>{#snippet item(u)}...{/snippet}</SuggestList>`。入力欄の `keydown` から `list.keydown(e)` |
-| 状態 | `keydown` は、上下（端でぐるっと回る）・Enter・Tab（選ぶ）・Esc（`onClose`）を処理したら `true`（既定の動作も止める）。候補が空なら `false`。ボタンは `mousedown` で入力欄からフォーカスを奪わない |
+| 状態 | `keydown` は、上下（端でぐるっと回る）・Enter・Tab（選ぶ）・Esc（`onClose`）を処理したら `true`（既定の動作も止める）。候補が空なら `false`。ボタンは `mousedown` で入力欄からフォーカスを奪わない。マウスが乗って動いた候補は、選択中（`index`）になる |
 
 ---
 

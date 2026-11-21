@@ -56,6 +56,10 @@
         class="suggest-list-item"
         class:suggest-list-item-selected={i === index}
         onmousedown={(e) => e.preventDefault()}
+        onmousemove={() => {
+          // マウスが乗った候補を、選択中にする（動かしたときだけ。キーで選んでいる最中に、止まったマウスで取られない）
+          if (index !== i) index = i;
+        }}
         onclick={() => onpick(it)}
       >
         {@render item(it)}

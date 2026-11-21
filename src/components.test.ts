@@ -372,6 +372,18 @@ describe('SuggestList', () => {
     ]);
   });
 
+  it('マウスが乗った（動かした）候補が、選択中になる。ホバーで、見た目が変わる', () => {
+    const host = document.body.appendChild(document.createElement('div'));
+    const app = mount(SuggestList<U>, { target: host, props: props({ index: 0 }) });
+    cleanups.push(() => void unmount(app as never));
+    flushSync();
+    const buttons = host.querySelectorAll('button');
+    expect(host.querySelector('.suggest-list-item-selected')).toBe(buttons[0]);
+    buttons[2].dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+    flushSync();
+    expect(host.querySelector('.suggest-list-item-selected')).toBe(buttons[2]);
+  });
+
   it('候補が空のとき keydown は何もしない（false）', () => {
     const host = document.body.appendChild(document.createElement('div'));
     const app = mount(SuggestList<U>, { target: host, props: props({ items: [] }) }) as unknown as { keydown(e: KeyboardEvent): boolean };
