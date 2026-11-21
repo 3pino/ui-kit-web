@@ -34,6 +34,8 @@ import Button from '@3pino/ui-kit-web/Button.svelte'
 
 見つからない名前は空のアイコンになり、コンソールに警告が出ます。アイコンは 24x24 の `<svg>`（`stroke="currentColor"`・線の太さ 2・角は丸）で、どれも並べて見た目がそろいます。
 
+**共通の独自アイコン**（`disnans-logo`・`fixplor-logo` などアプリのロゴと、`brand-docker`・`brand-git`・`brand-github`・`brand-markdown`・`brand-playwright`・`brand-python` など、ほかの製品・ファイルの種類のしるし）は、`@3pino/ui-kit-web` の `BRAND_ICONS` にまとめてあります。使うアプリは、起動時に `defineBrandIcons()` を 1 回呼ぶと、どれも名前で描けます（上の 1 の独自のアイコンになります）。新しい共通アイコンは `src/brandIcons.ts` に足します（24x24・線の太さ 2・角は丸・色は `currentColor`）。
+
 Svelte の画面では、**アイコン部品を渡す**のが基本です（すぐに描けて、使う分だけがバンドルに入ります）。名前（文字列）は、プラグインが指定したアイコンなど、実行時に決まるものに使います。
 
 ```ts

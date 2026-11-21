@@ -19,6 +19,7 @@ export {
   type IconRef,
   type IconResolver,
 } from './icons.svelte';
+export { BRAND_ICONS, defineBrandIcons } from './brandIcons';
 export { setHaptics, vibrate, type Vibrate } from './haptics';
 export { SWIPE_LOCK_PX, swipeAxis, type SwipeAxis } from './gesture';
 export * from './sortable';
