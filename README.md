@@ -12,7 +12,7 @@
 ## 使い方
 
 ```sh
-npm install git+https://github.com/3pino/ui-kit-web.git#v0.3.2
+npm install git+https://github.com/3pino/ui-kit-web.git#v0.3.3
 ```
 
 配布はソースのまま（`.svelte`・`.svelte.ts`・`.ts`）。取り込む側の Vite（`@sveltejs/vite-plugin-svelte`）が変換します。

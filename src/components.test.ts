@@ -111,6 +111,25 @@ describe('Menu', () => {
     expect(host.querySelector('.menu')).not.toBeNull();
   });
 
+  it('幕を右クリックすると、onclose のあと、その位置の下の要素へ、右クリックを改めて届ける（既定のメニューは出さない）', async () => {
+    const under = document.createElement('div');
+    document.body.appendChild(under);
+    cleanups.push(() => under.remove());
+    const seen: { x: number; y: number }[] = [];
+    under.addEventListener('contextmenu', (e) => seen.push({ x: e.clientX, y: e.clientY }));
+    const original = document.elementFromPoint;
+    document.elementFromPoint = () => under;
+    cleanups.push(() => (document.elementFromPoint = original));
+    const fn = vi.fn();
+    const host = render(Menu, { onclose: fn, children: html(items) });
+    const ev = new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 30, clientY: 40 });
+    host.querySelector<HTMLElement>('.menu-backdrop')!.dispatchEvent(ev);
+    expect(ev.defaultPrevented).toBe(true);
+    expect(fn).toHaveBeenCalledTimes(1);
+    await new Promise((r) => setTimeout(r, 0));
+    expect(seen).toEqual([{ x: 30, y: 40 }]);
+  });
+
   it('onclose があるとき、Esc でも onclose（下の画面の Esc には届けない）', () => {
     const below = vi.fn();
     window.addEventListener('keydown', below);

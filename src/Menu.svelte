@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
+  import { tick, type Snippet } from 'svelte';
   import { menuPlacement } from './menuPlacement';
 
   // ポップアップのメニュー。見た目はグローバルの .menu（@3pino/design-system の components.css）、位置は class で使う側が決める。
-  // onclose を渡すと、外側を押したら閉じる透明な幕を出し、Esc でも閉じる（Esc は、ここで止めて、下の画面の Esc（選択解除・パネルを閉じるなど）には届けない）。
+  // onclose を渡すと、外側を押したら閉じる透明な幕を出し、右クリックすると閉じたあと、その位置で右クリックしたものとして下の要素へ届け、Esc でも閉じる（Esc は、ここで止めて、下の画面の Esc（選択解除・パネルを閉じるなど）には届けない）。
   // 開いたときに画面の下からはみ出すなら、位置の基準（ボタン）の上側に出す（親の既定の位置は top: 100% + 6px を想定）
   let {
     label,
@@ -31,6 +31,20 @@
     onclose();
   }
 
+  /**
+   * 幕を右クリックした: メニューを閉じたあと、その位置で右クリックしたものとして、下の要素に改めて届ける
+   * （幕が右クリックを飲んでしまわない。関連のメニューを、一度で開き直せる）
+   */
+  async function backdropContext(ev: MouseEvent): Promise<void> {
+    ev.preventDefault();
+    const { clientX, clientY } = ev;
+    onclose?.();
+    await tick();
+    const under = document.elementFromPoint(clientX, clientY);
+    if (!under || under.closest('.menu-backdrop')) return;
+    under.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true, composed: true, button: 2, buttons: 0, clientX, clientY, screenX: ev.screenX, screenY: ev.screenY }));
+  }
+
   // 開いたとき（マウントしたとき）に一度だけ測る（測り方は menuPlacement.ts）。
   // 使える横の範囲は画面ではなくシェルの中身（広い画面で左に縦に並ぶナビバーは含めない）
   $effect(() => {
@@ -44,7 +58,7 @@
 <svelte:window onkeydowncapture={onKey} />
 
 {#if onclose}
-  <button type="button" class="menu-backdrop" aria-label="閉じる" onclick={onclose}></button>
+  <button type="button" class="menu-backdrop" aria-label="閉じる" onclick={onclose} oncontextmenu={backdropContext}></button>
 {/if}
 <!-- 上に出すときは、親の top の指定より強く（インラインで）上端を外し、ボタンの上に 6px 空けて置く -->
 <div
